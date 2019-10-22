@@ -40,4 +40,6 @@ if "new_task" in args:
 
 if "show" in args:
     task = Task()
-    task.all()
+    all_active_tasks = task.all(is_active=True)
+    for active_task in all_active_tasks:
+        print(active_task)

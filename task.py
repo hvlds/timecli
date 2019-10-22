@@ -14,19 +14,15 @@ class Task:
         self.db.session.add(new_task)
         self.db.session.commit()
 
-    def kill(self):
+    def kill(self, id):
         pass
 
-    def all(self):
-        all_tasks = list(self.db.session.query(TaskModel).all())
-        for task in all_tasks:
-            print(task)
-    
-    def all_active(self):
-        pass
-
-    def all_inactive(self):
-        pass
+    def all(self, is_active=None):
+        if is_active:
+            tasks = list(self.db.session.query(TaskModel).filter_by(is_active=is_active))
+        else:
+            tasks = list(self.db.session.query(TaskModel).all())
+        return tasks
     
     def get_active_count(self):
         pass
