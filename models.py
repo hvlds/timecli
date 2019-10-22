@@ -34,9 +34,11 @@ class TaskModel(Base):
 
     def get_duration(self):
         duration = str(self.date_stop - self.date_start)
-        return duration 
+        return duration
 
     def get_relative_id(self):
-        pass    
+        db = Database()
+        count = len(db.session.query(TaskModel).filter_by(is_active=True)) 
+        print(count)
 
 Base.metadata.create_all(db.engine)

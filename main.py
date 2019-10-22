@@ -43,3 +43,4 @@ if "show" in args:
     all_active_tasks = task.all(is_active=True)
     for active_task in all_active_tasks:
         print(active_task)
+        active_task.get_relative_id()
