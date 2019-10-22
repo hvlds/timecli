@@ -16,13 +16,14 @@ class Database:
 db = Database()
 Base = declarative_base()
 
-class Task(Base):
+class TaskModel(Base):
     __tablename__ = 'tasks'
 
     id = Column(Integer, primary_key=True)
     description = Column(String)
     date_start = Column(DATETIME)
-    date_stop = Column(DATETIME)
+    date_stop = Column(DATETIME, nullable=True)
+    is_active = Column(Boolean)
 
     def __str__(self):
         return "Task:{} | Start: {} |End: {}".format(
