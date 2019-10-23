@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DATETIME, Boolean
 from sqlalchemy.orm import sessionmaker
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 class Database:
@@ -44,5 +44,24 @@ class TaskModel(Base):
         relative_id = ids.index(self.id)
         print(relative_id)
         return relative_id
+
+    @staticmethod
+    def get_active_tasks():
+        db = Database()
+        query = db.session.query(TaskModel).filter_by(is_active=True)
+        query = query.order_by(TaskModel.id.asc())
+        active_tasks = dict()
+        ids = [task.id for task in query]
+        for task in query:
+            actual_time = datetime.now()
+            duration = str()
+            active_tasks = {
+                "id": task.id,
+                "relative_id": ids.index(task.id),
+                "description": task.description,
+                "duration": duration,
+            }
+
+        return active_tasks
 
 Base.metadata.create_all(db.engine)
