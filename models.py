@@ -32,36 +32,35 @@ class TaskModel(Base):
             self.date_stop
         )
 
-    def get_duration(self):
+    def get_duration(self) -> str:
         duration = str(self.date_stop - self.date_start)
         return duration
 
-    def get_relative_id(self):
-        db = Database()
-        query = db.session.query(TaskModel).filter_by(is_active=True)
-        query = query.order_by(TaskModel.id.asc())
-        ids = [x.id for x in query]
-        relative_id = ids.index(self.id)
-        print(relative_id)
-        return relative_id
-
     @staticmethod
-    def get_active_tasks():
+    def get_active_tasks() -> list:
         db = Database()
         query = db.session.query(TaskModel).filter_by(is_active=True)
         query = query.order_by(TaskModel.id.asc())
-        active_tasks = dict()
+        active_tasks = list()
         ids = [task.id for task in query]
         for task in query:
             actual_time = datetime.now()
             duration = str()
-            active_tasks = {
-                "id": task.id,
-                "relative_id": ids.index(task.id),
-                "description": task.description,
-                "duration": duration,
-            }
-
+            active_tasks.append(
+                {
+                    "id": task.id,
+                    "relative_id": ids.index(task.id),
+                    "description": task.description,
+                    "duration": duration,
+                }
+            ) 
         return active_tasks
+    
+    @staticmethod
+    def get_all_tasks() -> list:
+        db = Database()
+        query = db.session.query(TaskModel).all()
+        query = query.order_by(TaskModel.id.asc())
+        return list(query)
 
 Base.metadata.create_all(db.engine)

@@ -1,5 +1,6 @@
 import argparse
 from task import Task
+from models import TaskModel
 
 parser = argparse.ArgumentParser(description="Manage your task")
 subparser = parser.add_subparsers()
@@ -40,7 +41,4 @@ if "new_task" in args:
 
 if "show" in args:
     task = Task()
-    all_active_tasks = task.all(is_active=True)
-    for active_task in all_active_tasks:
-        print(active_task)
-        active_task.get_relative_id()
+    print(TaskModel.get_active_tasks())
