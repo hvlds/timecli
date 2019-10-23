@@ -40,5 +40,11 @@ if "new_task" in args:
     print(args.new_task)
 
 if "show" in args:
-    task = Task()
-    print(TaskModel.get_active_tasks())
+    active_tasks = TaskModel.get_active_tasks()
+    for task in active_tasks:
+        task_str = "[{}] {}".format(
+            task["relative_id"],
+            task["description"]
+        )
+        print(task_str)
+
