@@ -38,7 +38,11 @@ class TaskModel(Base):
 
     def get_relative_id(self):
         db = Database()
-        count = len(db.session.query(TaskModel).filter_by(is_active=True)) 
-        print(count)
+        query = db.session.query(TaskModel).filter_by(is_active=True)
+        query = query.order_by(TaskModel.id.asc())
+        ids = [x.id for x in query]
+        relative_id = ids.index(self.id)
+        print(relative_id)
+        return relative_id
 
 Base.metadata.create_all(db.engine)
