@@ -83,7 +83,10 @@ class Task(Base):
             task = active_tasks[relative_id]
             task_id = int(task["id"])
             query = db.session.query(Task).filter_by(id=task_id)
-            query.update({"is_active":False})         
+            query.update({
+                "is_active": False,
+                "date_stop": datetime.now(),
+                })         
             db.session.commit()
             print("Task {} terminated.".format(relative_id))
         else:
