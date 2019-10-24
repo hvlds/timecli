@@ -16,7 +16,7 @@ class Database:
 db = Database()
 Base = declarative_base()
 
-class TaskModel(Base):
+class Task(Base):
     __tablename__ = 'tasks'
 
     id = Column(Integer, primary_key=True)
@@ -39,8 +39,8 @@ class TaskModel(Base):
     @staticmethod
     def get_active_tasks() -> list:
         db = Database()
-        query = db.session.query(TaskModel).filter_by(is_active=True)
-        query = query.order_by(TaskModel.id.asc())
+        query = db.session.query(Task).filter_by(is_active=True)
+        query = query.order_by(Task.id.asc())
         active_tasks = list()
         ids = [task.id for task in query]
         for task in query:
@@ -59,8 +59,34 @@ class TaskModel(Base):
     @staticmethod
     def get_all_tasks() -> list:
         db = Database()
-        query = db.session.query(TaskModel).all()
-        query = query.order_by(TaskModel.id.asc())
+        query = db.session.query(Task).all()
+        query = query.order_by(Task.id.asc())
         return list(query)
+    
+    @staticmethod
+    def new(description):
+        new_task = Task(
+            description=description,
+            date_start=datetime.now(),
+            is_active=True
+        )
+        db = Database()
+        db.session.add(new_task)
+        db.session.commit()
+
+    @staticmethod
+    def kill(relative_id):
+        db = Database()
+        active_tasks = Task.get_active_tasks()
+        relative_id = int(relative_id)
+        if 0 <= relative_id < len(active_tasks):
+            task = active_tasks[relative_id]
+            task_id = int(task["id"])
+            query = db.session.query(Task).filter_by(id=task_id)
+            query.update({"is_active":False})         
+            db.session.commit()
+            print("Task {} terminated.".format(relative_id))
+        else:
+            print("Task out of range")
 
 Base.metadata.create_all(db.engine)

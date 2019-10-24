@@ -1,6 +1,5 @@
 import argparse
-from task import Task
-from models import TaskModel
+from models import Task
 
 parser = argparse.ArgumentParser(description="Manage your task")
 subparser = parser.add_subparsers()
@@ -35,12 +34,14 @@ subparser_task_list.add_argument(
 
 args = parser.parse_args()
 if "new_task" in args:
-    task = Task()
-    task.new(args.new_task)
+    Task.new(args.new_task)
     print(args.new_task)
 
+if "kill_task" in args:
+    Task.kill(args.kill_task)
+
 if "show" in args:
-    active_tasks = TaskModel.get_active_tasks()
+    active_tasks = Task.get_active_tasks()
     for task in active_tasks:
         task_str = "[{}] {} | {}".format(
             task["relative_id"],
