@@ -24,9 +24,9 @@ def main():
         action="store",
         default=argparse.SUPPRESS)
 
-    # Subparser list all task
-    subparser_task_list = subparser.add_parser("list", help="Show all the task running")
-    subparser_task_list.add_argument(
+    # Subparser show all task
+    subparser_task_show = subparser.add_parser("show", help="Show all the task running")
+    subparser_task_show.add_argument(
         "-a", "--active", 
         action="store_true", 
         dest="show_active")
