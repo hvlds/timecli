@@ -51,9 +51,7 @@ class Task(Base):
                     "id": task.id,
                     "relative_id": ids.index(task.id),
                     "description": task.description,
-                    "duration": duration,
-                }
-            ) 
+                    "duration": duration}) 
         return active_tasks
     
     @staticmethod
@@ -68,8 +66,7 @@ class Task(Base):
         new_task = Task(
             description=description,
             date_start=datetime.now(),
-            is_active=True
-        )
+            is_active=True)
         db = Database()
         db.session.add(new_task)
         db.session.commit()
@@ -85,10 +82,12 @@ class Task(Base):
             query = db.session.query(Task).filter_by(id=task_id)
             query.update({
                 "is_active": False,
-                "date_stop": datetime.now(),
-                })         
+                "date_stop": datetime.now()})         
             db.session.commit()
-            print("Task {} terminated.".format(relative_id))
+            print("Task [{}] '{}' terminated.\nTotal time: {}".format(
+                relative_id,
+                task["description"],
+                task["duration"]))
         else:
             print("Task out of range")
 
