@@ -25,11 +25,17 @@ def main():
         default=argparse.SUPPRESS)
 
     # Subparser show all task
-    subparser_task_show = subparser.add_parser("show", help="Show all the task running")
-    subparser_task_show.add_argument(
+    subparser_show = subparser.add_parser(
+        "show", 
+        help="Show all the task running")
+    subparser_show.add_argument(
         "-a", "--active", 
         action="store_true", 
         dest="show_active")
+    subparser_show.add_argument(
+        "--all",
+        action="store_true",
+        dest="show_all")
 
     args = parser.parse_args()
     if "new_task" in args:
@@ -39,13 +45,20 @@ def main():
         Task.kill(args.kill_task)
 
     if "show_active" in args:
-        active_tasks = Task.get_active_tasks()
-        for task in active_tasks:
-            task_str = "[{}] {} | {}".format(
-                task["relative_id"],
-                task["description"],
-                task["duration"])
-            print(task_str)
+        if args.show_active:
+            active_tasks = Task.get_active()
+            for task in active_tasks:
+                task_str = "[{}] {} | {}".format(
+                    task["relative_id"],
+                    task["description"],
+                    task["duration"])
+                print(task_str)
+    
+    if "show_all" in args:
+        if args.show_all:
+            all_tasks = Task.get_all()
+            for task in all_tasks:
+                print(task)
 
 if __name__ == "__main__":
     main()

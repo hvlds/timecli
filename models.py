@@ -37,7 +37,7 @@ class Task(Base):
         return duration
 
     @staticmethod
-    def get_active_tasks() -> list:
+    def get_active() -> list:
         db = Database()
         query = db.session.query(Task).filter_by(is_active=True)
         query = query.order_by(Task.id.asc())
@@ -55,11 +55,10 @@ class Task(Base):
         return active_tasks
     
     @staticmethod
-    def get_all_tasks() -> list:
+    def get_all() -> list:
         db = Database()
         query = db.session.query(Task).all()
-        query = query.order_by(Task.id.asc())
-        return list(query)
+        return query
     
     @staticmethod
     def new(description):
