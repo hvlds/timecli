@@ -45,7 +45,7 @@ class TaskModel(Base):
         ids = [task.id for task in query]
         for task in query:
             actual_time = datetime.now()
-            duration = str()
+            duration = str(actual_time - task.date_start).split(".")[0]
             active_tasks.append(
                 {
                     "id": task.id,
