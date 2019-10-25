@@ -71,11 +71,13 @@ def main():
     if "show_running" in args:
         if args.show_running:
             running_tasks = Task.get_running()
+            title = color.text_bold("Task running", underline=True)
+            print(title)
             for task in running_tasks:
                 relative_id = "[{}]".format(
                     task["relative_id"],
                 )
-                description = "\t{}".format(                    
+                description = "  {}".format(                    
                     task["description"]
                 )
                 duration = "\tRunning time: {}".format(

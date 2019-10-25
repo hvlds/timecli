@@ -12,17 +12,26 @@ class Color:
         }
         self.reset = "\u001b[0m"
         self.bold = "\033[1m"
+        self.underline = "\033[4m"
 
-    def text_color(self, text, color, bold=False) -> str:
+    def text_color(self, text, color, bold=False, underline=False) -> str:
         if color in self.colors.keys():
-            if bold == False: 
-                text = str(self.colors[color] + text + self.reset)
-            else:
-                text = str(self.colors[color] + self.bold + text + self.reset)
-        return text
+            new_text = self.colors[color]
+            if bold:
+                new_text += self.bold
+            if underline:
+                new_text += self.underline
+            new_text += text + self.reset
+        else:
+            new_text = text
+        return new_text
     
-    def bold(self, text):
-        return self.bold + text + self.reset
+    def text_bold(self, text, underline=False) -> str:
+        new_text = self.bold
+        if underline:
+            new_text += self.underline
+        new_text += text + self.reset
+        return new_text
     
     def get_colors(self) -> list:
         return self.colors.keys()
