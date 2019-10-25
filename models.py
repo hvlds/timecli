@@ -26,14 +26,15 @@ class Task(Base):
     is_running = Column(Boolean)
 
     def __str__(self):
-        return "Task:{} | Start: {} |End: {}".format(
+        return "Task:{} | Start: {} | End: {} | Duration: {}".format(
             self.description,
             self.date_start,
-            self.date_stop
+            self.date_stop,
+            self.get_duration()
         )
 
     def get_duration(self) -> str:
-        duration = str(self.date_stop - self.date_start)
+        duration = str(self.date_stop - self.date_start).split(".")[0]
         return duration
 
     @staticmethod
@@ -46,12 +47,13 @@ class Task(Base):
         for task in query:
             actual_time = datetime.now()
             duration = str(actual_time - task.date_start).split(".")[0]
-            running_tasks.append(
-                {
+            running_tasks.append({
                     "id": task.id,
                     "relative_id": ids.index(task.id),
                     "description": task.description,
-                    "duration": duration}) 
+                    "duration": duration
+                }
+            ) 
         return running_tasks
     
     @staticmethod
@@ -65,7 +67,8 @@ class Task(Base):
         new_task = Task(
             description=description,
             date_start=datetime.now(),
-            is_running=True)
+            is_running=True
+        )
         db = Database()
         db.session.add(new_task)
         db.session.commit()
@@ -81,13 +84,35 @@ class Task(Base):
             query = db.session.query(Task).filter_by(id=task_id)
             query.update({
                 "is_running": False,
-                "date_stop": datetime.now()})         
+                "date_stop": datetime.now()                
+            })         
             db.session.commit()
             print("Task [{}] '{}' terminated.\nTotal time: {}".format(
-                relative_id,
-                task["description"],
-                task["duration"]))
+                    relative_id,
+                    task["description"],
+                    task["duration"]
+            ))
         else:
             print("Task out of range")
+    
+    @staticmethod
+    def kill_last():
+        db = Database()
+        running_tasks = Task.get_running()
+        if len(running_tasks) > 0:
+            task = running_tasks[-1]
+            task_id = int(task["id"])
+            query = db.session.query(Task).filter_by(id=task_id)
+            query.update({
+                "is_running": False,
+                "date_stop": datetime.now()
+            })
+            db.session.commit()
+            print("Last Task '{}' terminated.\nTotal time: {}".format(
+                task["description"],
+                task["duration"]
+            ))
+        else:
+            print("There is no running task!")
 
 Base.metadata.create_all(db.engine)

@@ -14,7 +14,8 @@ def main():
         dest="new_task",
         help="new task",
         action="store",
-        default=argparse.SUPPRESS)
+        default=argparse.SUPPRESS
+    )
 
     # kill task argument
     task_parser.add_argument(
@@ -22,21 +23,34 @@ def main():
         help="kill a task",
         dest="kill_task",
         action="store",
-        default=argparse.SUPPRESS)
+        default=argparse.SUPPRESS
+    )
+    
+    # kill last task argument
+    task_parser.add_argument(
+        "--kill-last",
+        help="kill the last entered task",
+        dest="kill_last_task",
+        action="store_true",
+        default=argparse.SUPPRESS
+    )
 
     # Subparser show all task
     subparser_show = subparser.add_parser(
         "show",
-        help="Show all the task running")
+        help="Show all the task running"
+    )
     subparser_show.add_argument(
         "-r", "--running", 
         action="store_true", 
-        dest="show_running")
+        dest="show_running"
+    )
     subparser_show.add_argument(
         "-a",
         "--all",
         action="store_true",
-        dest="show_all")
+        dest="show_all"
+    )
 
     args = parser.parse_args()
     if "new_task" in args:
@@ -44,15 +58,20 @@ def main():
 
     if "kill_task" in args:
         Task.kill(args.kill_task)
+    
+    if "kill_last_task" in args:
+        if args.kill_last_task:
+            Task.kill_last()
 
     if "show_running" in args:
         if args.show_running:
             running_tasks = Task.get_running()
             for task in running_tasks:
-                task_str = "[{}] {} | {}".format(
+                task_str = "[{}] {} | Running time: {}".format(
                     task["relative_id"],
                     task["description"],
-                    task["duration"])
+                    task["duration"]
+                )
                 print(task_str)
 
     if "show_all" in args:
