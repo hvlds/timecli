@@ -2,6 +2,8 @@
 
 timecli is a CLI-App that help you manage the time expend in your daily tasks.
 
+![](img/timecli-example1.gif)
+
 ## Getting Started
 
 ```
