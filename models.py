@@ -26,11 +26,10 @@ class Task(Base):
     is_running = Column(Boolean)
 
     def __str__(self):
-        return "Task:{} | Start: {} | End: {} | Duration: {}".format(
+        return "Task:{} | Start: {} | End: {}".format(
             self.description,
             self.date_start,
             self.date_stop,
-            self.get_duration()
         )
 
     def get_duration(self) -> str:

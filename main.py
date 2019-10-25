@@ -1,7 +1,12 @@
 import argparse
 from models import Task
+from color import Color
 
 def main():
+    # Initialize the color changer class
+    color = Color()
+
+    # Define main CLI Parsers
     parser = argparse.ArgumentParser(description="Manage your task")
     subparser = parser.add_subparsers()
 
@@ -67,11 +72,14 @@ def main():
         if args.show_running:
             running_tasks = Task.get_running()
             for task in running_tasks:
-                task_str = "[{}] {} | Running time: {}".format(
+                task_str = "[{}] {}".format(
                     task["relative_id"],
-                    task["description"],
+                    task["description"]
+                )
+                duration_text = " Running time: {}".format(
                     task["duration"]
                 )
+                task_str += color.text_color(duration_text, "cyan", bold=True)
                 print(task_str)
 
     if "show_all" in args:
