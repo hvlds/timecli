@@ -72,14 +72,18 @@ def main():
         if args.show_running:
             running_tasks = Task.get_running()
             for task in running_tasks:
-                task_str = "[{}] {}".format(
+                relative_id = "[{}]".format(
                     task["relative_id"],
+                )
+                description = "\t{}".format(                    
                     task["description"]
                 )
-                duration_text = " Running time: {}".format(
+                duration = "\tRunning time: {}".format(
                     task["duration"]
                 )
-                task_str += color.text_color(duration_text, "cyan", bold=True)
+                task_str = color.text_color(relative_id, "yellow")
+                task_str += description
+                task_str += color.text_color(duration, "cyan")
                 print(task_str)
 
     if "show_all" in args:
