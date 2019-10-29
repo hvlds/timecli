@@ -17,7 +17,7 @@ db = Database()
 Base = declarative_base()
 
 class Task(Base):
-    __tablename__ = 'tasks'
+    __tablename__ = "tasks"
 
     id = Column(Integer, primary_key=True)
     description = Column(String)
@@ -113,5 +113,17 @@ class Task(Base):
             ))
         else:
             print("There is no running task!")
+
+
+class Project(Base):
+    __tablename__ = "projects"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+    def __str__(self):
+        return "Project: {}".format(
+            self.name
+        )
 
 Base.metadata.create_all(db.engine)
