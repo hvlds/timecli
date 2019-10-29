@@ -13,48 +13,60 @@ def main():
     # exclusive group of arguments
     task_parser = parser.add_mutually_exclusive_group()
 
-    # new task argument
     task_parser.add_argument(
-        "-n", "--new",
+        "-n", 
+        "--new",
         dest="new_task",
         help="new task",
         action="store",
         default=argparse.SUPPRESS
     )
-
-    # kill task argument
     task_parser.add_argument(
-        "-k", "--kill",
+        "-p",
+        "--project",
+        dest="project",
+        help="Choose a project for the task",
+        default=argparse.SUPPRESS
+    )
+
+    # Subparser kill task
+    subparser_kill = subparser.add_parser(
+        "kill",
+        help="Kill (terminate) a running task"
+    )
+    kill_group = subparser_kill.add_mutually_exclusive_group()
+    kill_group.add_argument(
+        "-i"
+        "--id",
         help="kill a task",
         dest="kill_task",
         action="store",
         default=argparse.SUPPRESS
     )
-    
-    # kill last task argument
-    task_parser.add_argument(
-        "--kill-last",
+    kill_group.add_argument(
+        "-l",
+        "--last",
         help="kill the last entered task",
         dest="kill_last_task",
         action="store_true",
         default=argparse.SUPPRESS
     )
 
-    # Subparser show all task
-    subparser_show = subparser.add_parser(
-        "show",
-        help="Show all the task running"
+    # Subparser list all task
+    subparser_list = subparser.add_parser(
+        "list",
+        help="list all the task running"
     )
-    subparser_show.add_argument(
+    subparser_list.add_argument(
         "-r", "--running", 
         action="store_true", 
-        dest="show_running"
+        dest="list_running"
     )
-    subparser_show.add_argument(
+    subparser_list.add_argument(
         "-a",
         "--all",
         action="store_true",
-        dest="show_all"
+        dest="list_all"
     )
 
     args = parser.parse_args()
@@ -68,8 +80,11 @@ def main():
         if args.kill_last_task:
             Task.kill_last()
 
-    if "show_running" in args:
-        if args.show_running:
+    if "kill_id" in args:
+        print(args.kill_id)
+
+    if "list_running" in args:
+        if args.list_running:
             running_tasks = Task.get_running()
             title = color.text_bold("Task running", underline=True)
             print(title)
@@ -88,8 +103,8 @@ def main():
                 task_str += color.text_color(duration, "cyan")
                 print(task_str)
 
-    if "show_all" in args:
-        if args.show_all:
+    if "list_all" in args:
+        if args.list_all:
             all_tasks = Task.get_all()
             for task in all_tasks:
                 print(task)
