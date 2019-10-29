@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DATETIME, Boolean
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, Integer, String, DATETIME, Boolean, ForeignKey
+from sqlalchemy.orm import sessionmaker, relationship
 from datetime import timedelta, datetime
 
 
@@ -24,6 +24,7 @@ class Task(Base):
     date_start = Column(DATETIME)
     date_stop = Column(DATETIME, nullable=True)
     is_running = Column(Boolean)
+    project_id = Column(Integer, ForeignKey("projects.id"))
 
     def __str__(self):
         return "Task:{} | Start: {} | End: {}".format(
@@ -120,6 +121,7 @@ class Project(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    tasks = relationship("Task")
 
     def __str__(self):
         return "Project: {}".format(

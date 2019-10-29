@@ -52,6 +52,18 @@ def main():
         default=argparse.SUPPRESS
     )
 
+    # Subparser project
+    subparser_project = subparser.add_parser(
+        "project",
+        help="Manage your projects"
+    )
+    subparser_project.add_argument(
+        "-n",
+        "--n",
+        help="Create a new project",
+        action="store",
+    )
+
     # Subparser list all task
     subparser_list = subparser.add_parser(
         "list",
