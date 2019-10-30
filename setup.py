@@ -1,11 +1,13 @@
-from distutils.core import setup
+import setuptools
 
-setup(
-    version="0.1dev",
+setuptools.setup(
+    version="0.0.1dev",
     name="timecli",
     author="Hernán Valdés",
     description="Time Tracking CLI App",
     author_email="hfvaldesg@gmail.com",
-    packages=["timecli"],
+    url="https://github.com/hfvaldesg/timecli",
+    packages=setuptools.find_packages(),
     install_requires=["sqlalchemy"],
+    python_requires=">=3.6",
 )

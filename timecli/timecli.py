@@ -1,6 +1,6 @@
 import argparse
-from models import Task
-from color import Color
+from .models import Task
+from .color import Color
 
 def main():
     # Initialize the color changer class
@@ -120,6 +120,3 @@ def main():
             all_tasks = Task.get_all()
             for task in all_tasks:
                 print(task)
-
-if __name__ == "__main__":
-    main()
