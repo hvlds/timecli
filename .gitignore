@@ -18,6 +18,8 @@ lib/
 lib64/
 parts/
 sdist/
+img/
+.img/
 var/
 wheels/
 *.egg-info/
