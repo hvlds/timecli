@@ -36,15 +36,15 @@ def main():
     )
     kill_group = subparser_kill.add_mutually_exclusive_group()
     kill_group.add_argument(
-        "-i"
-        "--id",
-        help="kill a task",
-        dest="kill_task",
+        "kill_id",
+        type=int,
+        metavar="ID",
+        help="ID (relative) of the task",
         action="store",
+        nargs='*',
         default=argparse.SUPPRESS
     )
     kill_group.add_argument(
-        "-l",
         "--last",
         help="kill the last entered task",
         dest="kill_last_task",
@@ -83,17 +83,14 @@ def main():
 
     args = parser.parse_args()
     if "new_task" in args:
-        Task.new(args.new_task)
-
-    if "kill_task" in args:
-        Task.kill(args.kill_task)
+        Task.new(args.new_task)       
     
     if "kill_last_task" in args:
         if args.kill_last_task:
             Task.kill_last()
 
     if "kill_id" in args:
-        print(args.kill_id)
+        Task.kill(args.kill_id[0])
 
     if "list_running" in args:
         if args.list_running:
