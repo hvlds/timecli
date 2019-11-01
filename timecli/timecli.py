@@ -68,16 +68,19 @@ class TaskCLI:
             "list",
             help="list all the task running"
         )
-        subparser_list.add_argument(
+        list_group = subparser_list.add_mutually_exclusive_group()
+        list_group.add_argument(
             "-r", "--running",
             action="store_true",
+            default=argparse.SUPPRESS,
             dest="list_running"
         )
-        subparser_list.add_argument(
+        list_group.add_argument(
             "-a",
             "--all",
             action="store_true",
-            dest="list_all"
+            default=argparse.SUPPRESS,
+            dest="list_all",
         )
     
     def menu(self):

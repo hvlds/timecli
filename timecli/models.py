@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, DATETIME, Boolean, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import timedelta, datetime
+from .color import Color
 
 
 class Database:
@@ -27,11 +28,18 @@ class Task(Base):
     project_id = Column(Integer, ForeignKey("projects.id"))
 
     def __str__(self):
-        return "Task:{} | Start: {} | End: {}".format(
-            self.description,
-            self.date_start,
-            self.date_stop,
+        color = Color()
+        text_task = ""
+        text_id = "[{}] ".format(
+            self.id
         )
+        text_description = "{}".format(
+            self.description
+        )
+        text_task += color.text_color(text_id, "yellow")
+        text_task += text_description
+
+        return text_task
 
     def get_duration(self) -> str:
         duration = str(self.date_stop - self.date_start).split(".")[0]
