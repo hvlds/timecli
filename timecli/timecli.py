@@ -1,6 +1,7 @@
 import argparse
 from .models import Task
 from .color import Color
+from .utility import list_running_tasks
 
 def main():
     # Initialize the color changer class
@@ -14,7 +15,7 @@ def main():
     task_parser = parser.add_mutually_exclusive_group()
 
     task_parser.add_argument(
-        "-n", 
+        "-n",
         "--new",
         dest="new_task",
         help="new task",
@@ -70,8 +71,8 @@ def main():
         help="list all the task running"
     )
     subparser_list.add_argument(
-        "-r", "--running", 
-        action="store_true", 
+        "-r", "--running",
+        action="store_true",
         dest="list_running"
     )
     subparser_list.add_argument(
@@ -83,8 +84,8 @@ def main():
 
     args = parser.parse_args()
     if "new_task" in args:
-        Task.new(args.new_task)       
-    
+        Task.new(args.new_task)
+
     if "kill_last_task" in args:
         if args.kill_last_task:
             Task.kill_last()
@@ -94,23 +95,7 @@ def main():
 
     if "list_running" in args:
         if args.list_running:
-            running_tasks = Task.get_running()
-            title = color.text_bold("Task running", underline=True)
-            print(title)
-            for task in running_tasks:
-                relative_id = "[{}]".format(
-                    task["relative_id"],
-                )
-                description = "  {}".format(                    
-                    task["description"]
-                )
-                duration = "\tRunning time: {}".format(
-                    task["duration"]
-                )
-                task_str = color.text_color(relative_id, "yellow")
-                task_str += description
-                task_str += color.text_color(duration, "cyan")
-                print(task_str)
+            list_running_tasks()
 
     if "list_all" in args:
         if args.list_all:
